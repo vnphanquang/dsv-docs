@@ -1,3 +1,36 @@
+# Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [Todos](#todos)
+  - [1. npm update node-sass to @latest to better support node and/or ubuntu](#1-npm-update-node-sass-to-latest-to-better-support-node-andor-ubuntu)
+  - [2. Upgrade Mattermost (MM) server.](#2-upgrade-mattermost-mm-server)
+  - [3. Set up production WSGI server for cvitter's Bitbucket webhook](#3-set-up-production-wsgi-server-for-cvitters-bitbucket-webhook)
+- [Mattermost Local Development Setup (Ubuntu 18.04 tested)](#mattermost-local-development-setup-ubuntu-1804-tested)
+  - [Set Up MM server](#set-up-mm-server)
+      - [1. Follow steps 1 - 6 at MM's Dev Server Setup Guide](#1-follow-steps-1---6-at-mms-dev-server-setup-guide)
+      - [2. Run](#2-run)
+      - [3. Fork and/or clone a specific mattermost server repo you want to test into](#3-fork-andor-clone-a-specific-mattermost-server-repo-you-want-to-test-into)
+      - [3. Continue from step 9 till end.](#3-continue-from-step-9-till-end)
+      - [4. Run make run-server, if yields error, proceed through next to step, otherwise skip to step 6](#4-run-make-run-server-if-yields-error-proceed-through-next-to-step-otherwise-skip-to-step-6)
+      - [5. Install go dep:](#5-install-go-dep)
+      - [6. Link dist &amp; client as specified in step 5 at MM's Dev Webapp Setup Guide](#6-link-dist-amp-client-as-specified-in-step-5-at-mms-dev-webapp-setup-guide)
+      - [7. Run make run-server to run only server, or make run to run both server and webapp (if already set up)](#7-run-make-run-server-to-run-only-server-or-make-run-to-run-both-server-and-webapp-if-already-set-up)
+  - [Set Up MM Webapp](#set-up-mm-webapp)
+  - [Issues](#issues)
+- [Plugin/Webhook Configuration](#pluginwebhook-configuration)
+  - [Enable Plugin Uploads](#enable-plugin-uploads)
+  - [Mattermost Plugin/Webhook List](#mattermost-pluginwebhook-list)
+  - [Set up Bitbucket's Webhook (cvitter's implementation)](#set-up-bitbuckets-webhook-cvitters-implementation)
+    - [1. Install Python &amp;&amp; Dependencies](#1-install-python-ampamp-dependencies)
+    - [2. Run Python Flask Server](#2-run-python-flask-server)
+    - [3. (if necessary) Set Up Nginx Proxy](#3-if-necessary-set-up-nginx-proxy)
+- [Useful Linux (Ubuntu 18.04 tested) commands](#useful-linux-ubuntu-1804-tested-commands)
+  - [Show which port what is running on](#show-which-port-what-is-running-on)
+  - [Start/stop/restart mysql service](#startstoprestart-mysql-service)
+  - [Stop/remove all docker containers](#stopremove-all-docker-containers)
+
+<br />
+<br />
 
 # Todos
 
