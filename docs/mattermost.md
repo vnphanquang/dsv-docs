@@ -192,3 +192,57 @@ Bitbucket   |Webhook    | cvitter       |Python     |https://github.com/cvitter/
         - https://stackoverflow.com/questions/4320774/nginx-how-to-keep-double-slashes-in-urls
         - http://nginx.org/en/docs/http/ngx_http_core_module.html#merge_slashes
 
+<br/>
+<br/>
+
+# Useful Linux (Ubuntu 18.04 tested) commands
+
+## Show which port what is running on
+```bash
+
+#see what ports are open
+nmap -sS -O 127.0.0.1
+#or
+netstat -nap
+#or
+netstat -tlnp
+
+#alternatively, for mysql:
+sudo mysql
+mysql> SHOW GLOBAL VARIABLES LIKE 'PORT';
+```
+
+Resources: [1](https://serverfault.com/questions/116100/how-to-check-what-port-mysql-is-running-on), [2](https://www.linux-noob.com/forums/topic/1262-check-what-ports-are-open/)
+
+## Start/stop/restart mysql service
+```bash
+#start/stop from the command line: 
+
+/etc/init.d/mysqld start 
+/etc/init.d/mysqld stop 
+/etc/init.d/mysqld restart 
+
+#Some Linux flavours offer the service command too service 
+
+mysqld start service 
+mysqld stop service 
+mysqld restart 
+
+#or 
+
+service mysql start 
+service mysql stop 
+service mysql restart
+
+```
+
+[Source](https://tableplus.com/blog/2018/10/how-to-start-stop-restart-mysql-server.html)
+
+## Stop/remove all docker containers
+```bash
+docker stop $(docker ps -a -q) 
+docker rm $(docker ps -a -q)
+```
+
+Resources: [1](https://linuxize.com/post/how-to-remove-docker-images-containers-volumes-and-networks/), [2](https://docs.docker.com/engine/reference/commandline/kill/)
+
