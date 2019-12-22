@@ -61,8 +61,8 @@ It is best to run the server once ([see above](#7-run-make-run-server-to-run-onl
 
     ```json
         {
-            PluginSettings: {
-                EnableUploads: true
+            "PluginSettings": {
+                "EnableUploads": true
             }
         }
     ```
