@@ -43,10 +43,29 @@ Follow all steps at [MM's Dev Webapp Setup Guide](https://developers.mattermost.
 
 -  Make sure to use the specific repo you want to test instead of mattermost's
 - ❗ At step 5, adjust paths to match `$(go env GOPATH)/src/github.com/{dsv}` as specified above
-- ❗ DSV's current (as of 2019-12-20) webapp require node v.10.x, either use `nvm` to adjust or update node-sass to support newer versions of node and/or ubuntu. See issue {#TODO: add link to issue} for details
+- ❗ DSV's current (as of 2019-12-20) webapp require node v.10.x, either use `nvm` to adjust or update node-sass to support newer versions of node and/or ubuntu. See [issues](#issues) for details
 - Run `make test` for testing, `npm run run` or `make run` to run webapp server
 
 For more `make` commands, see [MM's Dev Server Workflow Guide](https://developers.mattermost.com/contribute/server/developer-workflow/)
+
+
+## Issues
+
+Repo|Description|Reason(s)|Solution(s)|Resources
+---|---|---|---|---
+MM webapp|HTTP 404 on `npm install node-sass`|node-sass v.4.11.x [does not support](https://github.com/sass/node-sass/releases) node >12.0 on linux system|- revert node back to support versions, or<br/> - update node-sass to support newer node?|[1](https://github.com/sass/node-sass/blob/master/TROUBLESHOOTING.md#404-downloading-bindingnode-file)
+MM webapp|401 unauthorized response/ JS infinite loop -> browser not responding|user’s credentials are cached|- perform hard reload, if not resolved:<br/>- clear cache manually through browser settings
+MM server|`make run-server` fails and outputs `Error starting userland proxy: listen tcp0.0.0.0:3306: bind: address already in use.`|Mysql server running on same port|- uninstall mysql, or<br/>- reconfigure mysql server(?), or<br/>- stop mysql service(?)|[1](https://stackoverflow.com/questions/37896369/error-starting-userland-proxy-listen-tcp0-0-0-03306-bind-address-already-in), [2](https://docs.mattermost.com/developer/dev-setup-troubleshooting.html)
+MM server|`make: go: command not found` (on `make run`)|go’s path conflict between `/usr/local/go` and `usr/local/bin/go`|?|[1](https://askubuntu.com/questions/1092589/command-go-not-found), [2](https://tecadmin.net/install-go-on-ubuntu/)
+MM server|`/gitlab connect` yields `The redirect URI included is not valid`|?|change “System Console\Web Server\Site URL” to exclude end backslash (\\)|[1](https://gitlab.com/gitlab-org/gitlab-mattermost/issues/84)
+MM server|`gitlab[/github] subscribe …` yields `Unable to retreive informations`|- gitlab/github OAuth app of private repo does not give access for MM, or<br/>- repo name is not correct|Modify access given in OAuth app settings
+
+
+
+
+
+
+
 
 <br/>
 <br/>
