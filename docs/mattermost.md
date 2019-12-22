@@ -48,6 +48,7 @@ Follow all steps at [MM's Dev Webapp Setup Guide](https://developers.mattermost.
 
 For more `make` commands, see [MM's Dev Server Workflow Guide](https://developers.mattermost.com/contribute/server/developer-workflow/)
 
+<br/>
 
 ## Issues
 
@@ -59,13 +60,6 @@ MM server|`make run-server` fails and outputs `Error starting userland proxy: li
 MM server|`make: go: command not found` (on `make run`)|go’s path conflict between `/usr/local/go` and `usr/local/bin/go`|?|[1](https://askubuntu.com/questions/1092589/command-go-not-found), [2](https://tecadmin.net/install-go-on-ubuntu/)
 MM server|`/gitlab connect` yields `The redirect URI included is not valid`|?|change “System Console\Web Server\Site URL” to exclude end backslash (\\)|[1](https://gitlab.com/gitlab-org/gitlab-mattermost/issues/84)
 MM server|`gitlab[/github] subscribe …` yields `Unable to retreive informations`|- gitlab/github OAuth app of private repo does not give access for MM, or<br/>- repo name is not correct|Modify access given in OAuth app settings
-
-
-
-
-
-
-
 
 <br/>
 <br/>
