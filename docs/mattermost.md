@@ -1,38 +1,59 @@
 
+# Todos
 
-# Mattermost (MM) Local Development Setup
+## 1. npm update node-sass to @latest to better support node and/or ubuntu
+
+## 2. Upgrade Mattermost (MM) server.
+
+- test locally for compatibility between @latest MM server && DSV current webapp
+- @latest MM server will come prepackaged with github, gitlab, jira plugins (and more)
+- migrate plugins && webhooks to new MM server version
+  
+## 3. Set up production WSGI server for  cvitter's Bitbucket webhook
+
+Python Flask documentation recommend [deploy](https://flask.palletsprojects.com/en/1.1.x/tutorial/deploy/) python app within a production [WSGI](https://www.fullstackpython.com/wsgi-servers.html) server.
+
+<br />
+<br />
+
+# Mattermost Local Development Setup (Ubuntu 18.04 tested)
 
 ## Set Up MM server
 
 #### 1. Follow steps 1 - 6 at [MM's Dev Server Setup Guide](https://developers.mattermost.com/contribute/server/developer-setup/)
 
-- ❗ File .bashrc is located at `/home/$(whoami)` directory. Run `ls -a` to verify
+- ❗ File .bashrc is located at `/home/$(whoami)` directory. Run `ls /home/$(whoami) -a` to verify
 
-#### 2. Run `mkdir -p $(go env GOPATH)/src/github.com/{dsv}`, where {dsv} can be anything, but keep consistent throughout
+#### 2. Run 
+
+```bash
+mkdir -p $(go env GOPATH)/src/github.com/{dsv}
+```
+where {dsv} can be anything, but keep consistent throughout
 
 #### 3. Fork and/or clone a specific mattermost server repo you want to test into 
 
 ```bash
-    $(go env GOPATH)/src/github.com/{dsv}
+$(go env GOPATH)/src/github.com/{dsv}
 ```
 
 #### 3. Continue from step 9 till end. 
 
-- ❗ Install golang
+- ❗ Install golang with caution, follow [this](https://www.digitalocean.com/community/tutorials/how-to-install-go-on-ubuntu-18-04) and make sure go installation is at `/usr/local` 
 
 #### 4. Run `make run-server`, if yields error, proceed through next to step, otherwise skip to [step 6](#6-link-dist-amp-client-as-specified-in-step-5-at-mattermosts-dev-webapp-setup-guide)
 
 #### 5. Install go dep:
 ```bash
-    mkdir $GOPATH/bin
-    curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+mkdir $GOPATH/bin
+curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
 ```
 
 - ❗(inconsistent results, may yield error, proceed with caution) `cd` into mattermost-server directory and run `dep ensure` to install dependencies. This process might take a while.
 
 #### 6. Link `dist` & `client` as specified in step 5 at [MM's Dev Webapp Setup Guide](https://developers.mattermost.com/contribute/webapp/developer-setup/)
 
-#### 7. Run `make run-server` to run only server, or `make run` to run both server and webapp
+#### 7. Run `make run-server` to run only server, or `make run` to run both server and webapp (if already set up)
 
 <br/>
 
@@ -103,7 +124,7 @@ Bitbucket   |Webhook    | cvitter       |Python     |https://github.com/cvitter/
 ### 1. Install Python && Dependencies
 - install python3 (if not already), following [this instruction](https://vitux.com/install-python3-on-ubuntu-and-set-up-a-virtual-programming-environment/)
 
-❗ Cvitter's implementation does not currently support all [bitbucket events](https://github.com/cvitter/mattermost-bitbucket-bridge#supported-bitbucket-events), some will yield log error & print trace stack but should not interrupt python webhook nor mattermost server.
+❗ cvitter's implementation does not currently support all [bitbucket events](https://github.com/cvitter/mattermost-bitbucket-bridge#supported-bitbucket-events), some will yield log error & print trace stack but should not interrupt python webhook nor mattermost server.
 
 
 - run
