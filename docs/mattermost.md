@@ -85,8 +85,12 @@ Bitbucket   |Webhook    | cvitter       |Python     |https://github.com/cvitter/
 
 ## Set up Bitbucket's Webhook ([cvitter's implementation](https://github.com/cvitter/mattermost-bitbucket-bridge))
 
+
+
 ### 1. Install Python && Dependencies
 - install python3 (if not already), following [this instruction](https://vitux.com/install-python3-on-ubuntu-and-set-up-a-virtual-programming-environment/)
+
+❗ Cvitter's implementation does not currently support all [bitbucket events](https://github.com/cvitter/mattermost-bitbucket-bridge#supported-bitbucket-events), some will yield log error & print trace stack but should not interrupt python webhook nor mattermost server.
 
 
 - run
@@ -97,55 +101,55 @@ Bitbucket   |Webhook    | cvitter       |Python     |https://github.com/cvitter/
         #or any other dependencies that future version of this repo might require
     ```
 
-### 2. Run Python Flash Server
+### 2. Run Python Flask Server
 
 - Follow steps [here](https://github.com/cvitter/mattermost-bitbucket-bridge#setup-the-flask-application)
 
   - ❗ You can simply start app with `sudo python bitbucket.py` for easier debugging.
 
-  - If your mattermost server lives at port `8065` as default, you might set your python app at port `8064`. Anyway remember this port for next step.
+  - If your mattermost server lives at port `8065` as default, you might set your python app at port `8064`. Remember this port for next step.
 
   - ❗If developing locally, use [ngrok](https://dashboard.ngrok.com/) to expose server path, otherwise, see the following steps to set up nginx proxy
 
 ### 3. (if necessary) Set Up Nginx Proxy
 
-- open editor (`vi`, `nano`, or remote vscode) at:
+- open editor (`vi`, `nano`, remote vscode, ...) at:
 
     ```bash
         /etc/nginx/sites-available/{appropriate-config-file}
     ```
-    where `{appropriate-config-file}` varies depending on server settings & routing, might be one of the following:
+    where `{appropriate-config-file}` varies depending on server settings & routing and might be one of the following:
 
-    - `default` if you want your python server to live on something like `https://domain.com/python-server`
+    - `default`, if you want python server to live on something like `https://domain.com/python-server`
 
-    - `subdomain.domain.com` (*depends on your naming convention*) if you want your python server to live on a subdomain
+    - `subdomain.domain.com` (*depends on your naming convention*), if you want python server to live on a subdomain
 
-- proxy  a path  to python app. For example, for your python app to live at `https://mattermost.domain.com/bitbucket-hook`, create and/or edit `mattermost.domain.com`:
+- proxy  a path to server. For example, for python server to live at `https://mattermost.domain.com/bitbucket-hook`, create and/or edit `mattermost.domain.com`:
 
-        ```nginx
-        #...
-        server {
-            root /var/www/mattermost.domain.com;
-            index index.html index.htm index.nginx-debian.html;
+    ```nginx
+    #...
+    server {
+        root /var/www/mattermost.domain.com;
+        index index.html index.htm index.nginx-debian.html;
 
-            server_name mattermost.domain.com;
-            #merge_slashes off;
+        server_name mattermost.domain.com;
+        #merge_slashes off;
 
-            location / {
-                proxy_pass http://localhost:8065 # or a custom port for mattermost server 
-                #...
-            }
-
-            location /bitbucket-hook {
-                rewrite ^bitbucket-hook(.*) /$1 break;
-                proxy_pass http://localhost:8064 # or a custom port for python app
-                #...
-            }   
-                
+        location / {
+            proxy_pass http://localhost:8065 # or a custom port for mattermost server 
             #...
         }
+
+        location /bitbucket-hook {
+            rewrite ^bitbucket-hook(.*) /$1 break;
+            proxy_pass http://localhost:8064 # or a custom port for python app
+            #...
+        }   
+            
         #...
-        ```
+    }
+    #...
+    ```
     - ❗ every time done editing nginx config, run
         ```bash
         sudo nginx -t #to test config files
