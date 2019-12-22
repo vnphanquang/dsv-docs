@@ -125,10 +125,11 @@ Bitbucket   |Webhook    | cvitter       |Python     |https://github.com/cvitter/
         ```nginx
         #...
         server {
-            #...
             root /var/www/mattermost.domain.com;
-            #...
+            index index.html index.htm index.nginx-debian.html;
 
+            server_name mattermost.domain.com;
+            #merge_slashes off;
 
             location / {
                 proxy_pass http://localhost:8065 # or a custom port for mattermost server 
@@ -161,15 +162,7 @@ Bitbucket   |Webhook    | cvitter       |Python     |https://github.com/cvitter/
             https://mattermost.domain.com/bitbucket-hook//hooks/[hookcode]
         ```
 
-        then add `merge_slashes off;` within the same `server` context of the two `location` blocks above:
-
-        ```nginx
-        server {
-            merge_slashes off;
-            #location / {...}
-            #location /... {...}
-        }
-        ```
+        then add or uncomment `merge_slashes off;` within the same `server` context of the two `location` blocks above.
 
         if issue is still not resolved, edit bitbucket webhook url to the following format:
         ```http
