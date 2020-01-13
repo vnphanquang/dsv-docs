@@ -34,7 +34,7 @@
 
 # Todos
 
-## 1. npm update node-sass to @latest to better support node and/or ubuntu
+## 1. `npm update` node-sass to `@latest` to better support node and/or ubuntu
 
 ## 2. Upgrade Mattermost (MM) server.
 
@@ -49,7 +49,7 @@ Python Flask documentation recommend [deploy](https://flask.palletsprojects.com/
 <br />
 <br />
 
-# Mattermost Local Development Setup (Ubuntu 18.04 tested)
+# Mattermost Local Development Setup (tested on *Ubuntu 18.04*)
 
 ## Set Up MM server
 
@@ -108,11 +108,11 @@ For more `make` commands, see [MM's Dev Server Workflow Guide](https://developer
 
 Repo|Description|Reason(s)|Solution(s)|Resources
 ---|---|---|---|---
-MM webapp|HTTP 404 on `npm install node-sass`|node-sass v.4.11.x [does not support](https://github.com/sass/node-sass/releases) node >12.0 on linux system|- revert node back to support versions, or<br/> - update node-sass to support newer node?|[1](https://github.com/sass/node-sass/blob/master/TROUBLESHOOTING.md#404-downloading-bindingnode-file)
+MM webapp|HTTP 404 on `npm install node-sass`|node-sass v.4.11.x [does not support](https://github.com/sass/node-sass/releases) node >12.0 on linux system|- revert node back to support versions, or<br/> - update node-sass to support newer node?|[Node-sass troubleshooting](https://github.com/sass/node-sass/blob/master/TROUBLESHOOTING.md#404-downloading-bindingnode-file)
 MM webapp|401 unauthorized response/ JS infinite loop -> browser not responding|user’s credentials are cached|- perform hard reload, if not resolved:<br/>- clear cache manually through browser settings
-MM server|`make run-server` fails and outputs `Error starting userland proxy: listen tcp0.0.0.0:3306: bind: address already in use.`|Mysql server running on same port|- uninstall mysql, or<br/>- reconfigure mysql server(?), or<br/>- stop mysql service(?)|[1](https://stackoverflow.com/questions/37896369/error-starting-userland-proxy-listen-tcp0-0-0-03306-bind-address-already-in), [2](https://docs.mattermost.com/developer/dev-setup-troubleshooting.html)
-MM server|`make: go: command not found` (on `make run`)|go’s path conflict between `/usr/local/go` and `usr/local/bin/go`|?|[1](https://askubuntu.com/questions/1092589/command-go-not-found), [2](https://tecadmin.net/install-go-on-ubuntu/)
-MM server|`/gitlab connect` yields `The redirect URI included is not valid`|?|change “System Console\Web Server\Site URL” to exclude end backslash (\\)|[1](https://gitlab.com/gitlab-org/gitlab-mattermost/issues/84)
+MM server|`make run-server` fails and outputs `Error starting userland proxy: listen tcp0.0.0.0:3306: bind: address already in use.`|Mysql server running on same port|- uninstall mysql, or<br/>- reconfigure mysql server(?), or<br/>- stop mysql service(?)|[Stackoverflow](https://stackoverflow.com/questions/37896369/error-starting-userland-proxy-listen-tcp0-0-0-03306-bind-address-already-in), [Mattermost docs](https://docs.mattermost.com/developer/dev-setup-troubleshooting.html)
+MM server|`make: go: command not found` (on `make run`)|go’s path conflict between `/usr/local/go` and `usr/local/bin/go`|?|[Command Go not found](https://askubuntu.com/questions/1092589/command-go-not-found),[Go installation Ubuntu](https://tecadmin.net/install-go-on-ubuntu/)
+MM server|`/gitlab connect` yields `The redirect URI included is not valid`|?|change “System Console\Web Server\Site URL” to exclude end backslash (\\)|[Gitlab-mattermost repo issue #84](https://gitlab.com/gitlab-org/gitlab-mattermost/issues/84)
 MM server|`gitlab[/github] subscribe …` yields `Unable to retreive informations`|- gitlab/github OAuth app of private repo does not give access for MM, or<br/>- repo name is not correct|Modify access given in OAuth app settings
 
 <br/>
@@ -153,19 +153,29 @@ Bitbucket   |Webhook    | cvitter       |Python     |https://github.com/cvitter/
 ## Set up Bitbucket's Webhook ([cvitter's implementation](https://github.com/cvitter/mattermost-bitbucket-bridge))
 
 
+❗ cvitter's implementation does not currently support all [bitbucket events](https://github.com/cvitter/mattermost-bitbucket-bridge#supported-bitbucket-events), some will yield log error & stack trace in development but should not interrupt python webhook or mattermost server.
 
 ### 1. Install Python && Dependencies
-- install python3 (if not already), following [this instruction](https://vitux.com/install-python3-on-ubuntu-and-set-up-a-virtual-programming-environment/)
-
-❗ cvitter's implementation does not currently support all [bitbucket events](https://github.com/cvitter/mattermost-bitbucket-bridge#supported-bitbucket-events), some will yield log error & print trace stack but should not interrupt python webhook nor mattermost server.
 
 
-- run
+- install python3 (if not already), and set up a [python virtual environment](https://realpython.com/python-virtual-environments-a-primer/), using one of these:
+  - [pipenv](https://pipenv.kennethreitz.org/en/latest/)
+  - [virtualenv](https://virtualenv.pypa.io/en/latest/)
+  - Alternatively, for long-term development, the Anaconda Python distribution is recommended (virtual env is supported out of the box), instruction for ubuntu [here](https://www.digitalocean.com/community/tutorials/how-to-install-anaconda-on-ubuntu-18-04-quickstart)
+
+   ❗ Make sure to set necessary environment variables and python path according to each of the above
+
+- install the following dependencies into python virtual env:
     ```bash
-        sudo apt install python3-pip #(if not already installed)
-        sudo pip3 install flask 
-        sudo pip3 install requests
-        #or any other dependencies that future version of this repo might require
+        pip install flask 
+        pip install requests
+        #or any other dependencies that future version might require
+    ```
+    alternatively, if anaconda distribution is installed:
+    ```bash
+        conda install flask
+        conda install requests
+        #or any other dependencies that future version might require
     ```
 
 ### 2. Run Python Flask Server
@@ -174,7 +184,7 @@ Bitbucket   |Webhook    | cvitter       |Python     |https://github.com/cvitter/
 
   - ❗ You can simply start app with `sudo python bitbucket.py` for easier debugging.
 
-  - If your mattermost server lives at port `8065` as default, you might set your python app at port `8064`. Remember this port for next step.
+  - If your mattermost server lives at port `8065` as default, you can set your python app at port `8064`. Remember this port for next step.
 
   - ❗If developing locally, use [ngrok](https://dashboard.ngrok.com/) to expose server path, otherwise, see the following steps to set up nginx proxy
 
@@ -219,17 +229,17 @@ Bitbucket   |Webhook    | cvitter       |Python     |https://github.com/cvitter/
     ```
     - ❗ every time done editing nginx config, run
         ```bash
-        sudo nginx -t #to test config files
-        sudo systemctl restart nginx
+        sudo nginx -t # tests config files
+        sudo systemctl restart nginx # restarts nginx service
         ```
 
     - the first `location` context is the proxy for your mattermost server, the second is for bitbucket webhook python app. Both live on the same subdomain.
     - `rewrite` rule is to rewrite request url to the correct corresponding server endpoint. If not specified, for example, `https://mattermost.domain.com/bitbucket-hook` will route to `http//localhost:8064/bitbucket-hook` instead of only `http//localhost:8064`. See [here](https://github.com/cvitter/mattermost-bitbucket-bridge#setup-the-flask-application) for more info
     - ❗ if experiencing **multiple slashes** on http request path (verify by `GET` the path and look at logs of python app), for example:
         ```bash
-            #GET request to
+            # GET request to
             https://mattermost.domain.com/bitbucket-hook/hooks/[hookcode]
-            #might yield 404 and log to
+            # might yield 404 and log to
             https://mattermost.domain.com/bitbucket-hook//hooks/[hookcode]
         ```
 
@@ -249,7 +259,7 @@ Bitbucket   |Webhook    | cvitter       |Python     |https://github.com/cvitter/
 <br/>
 <br/>
 
-# Useful Linux (Ubuntu 18.04 tested) commands
+# Useful Linux (tested on Ubuntu 18.04) commands
 
 ## Show which port what is running on
 ```bash
@@ -266,7 +276,10 @@ sudo mysql
 mysql> SHOW GLOBAL VARIABLES LIKE 'PORT';
 ```
 
-Resources: [1](https://serverfault.com/questions/116100/how-to-check-what-port-mysql-is-running-on), [2](https://www.linux-noob.com/forums/topic/1262-check-what-ports-are-open/)
+Resources: 
+
+  - [How to check what port mysql is running on](https://serverfault.com/questions/116100/how-to-check-what-port-mysql-is-running-on), 
+  - [Check what ports are open](https://www.linux-noob.com/forums/topic/1262-check-what-ports-are-open/)
 
 ## Start/stop/restart mysql service
 ```bash
@@ -290,7 +303,9 @@ service mysql restart
 
 ```
 
-[Source](https://tableplus.com/blog/2018/10/how-to-start-stop-restart-mysql-server.html)
+Resources:
+
+- [How to start/stop/restart mysql server](https://tableplus.com/blog/2018/10/how-to-start-stop-restart-mysql-server.html)
 
 ## Stop/remove all docker containers
 ```bash
@@ -298,5 +313,8 @@ docker stop $(docker ps -a -q)
 docker rm $(docker ps -a -q)
 ```
 
-Resources: [1](https://linuxize.com/post/how-to-remove-docker-images-containers-volumes-and-networks/), [2](https://docs.docker.com/engine/reference/commandline/kill/)
+Resources: 
+
+- [How to remove docker images containers volumes and networks](https://linuxize.com/post/how-to-remove-docker-images-containers-volumes-and-networks/), 
+- [Docker's kill command docs](https://docs.docker.com/engine/reference/commandline/kill/)
 
