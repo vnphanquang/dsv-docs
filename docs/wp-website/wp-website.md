@@ -6,6 +6,7 @@
 
 3. Setup XAMPP:
 
+
 - Start XAMPP from tab `General`
 ![xamp_1]
 
