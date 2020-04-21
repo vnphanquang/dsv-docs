@@ -37,3 +37,13 @@
 [xamp_2]: ./images/xampp_2_services.png "XAMPP Services"
 [xamp_3]: ./images/xampp_3_network.png "XAMPP Network"
 [xamp_4]: ./images/xampp_4_volumnes.png "XAMPP Volumnes"
+
+
+
+If website on `localhost` show error messages at top, add these to `wp-config.php`
+```PHP
+ini_set('display_errors', 'Off');
+ini_set('error_reporting', E_ALL );
+define( 'WP_DEBUG', false );
+define( 'WP_DEBUG_DISPLAY', false);
+```
